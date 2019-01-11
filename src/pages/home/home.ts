@@ -159,14 +159,13 @@ export class HomePage {
     }
   ];
 
-  ingredientsList = [];
-
+  
   constructor(public navCtrl: NavController) {
   }
 
   ionViewDidLoad(){
     this.Pizzas.forEach((pizza) => {
-      
+      let ingredientsList = [];
       
       let pizzaIngredients = pizza.ingredients;
       pizza.price = this.BasePrice;
@@ -183,11 +182,15 @@ export class HomePage {
         let ingredient = this.Ingredients.filter(ingredient => { return ingredient.id === ingred });
         ingredient = ingredient[0];
         
-        this.ingredientsList.push(ingredient.name);
+        ingredientsList.push(ingredient.name);
         pizza.price += ingredient.price;
 
       });     
-      console.log('ingredientsList: ', this.ingredientsList);
+      
+      pizza.ingredients = [];
+      pizza.ingredients = ingredientsList;
+
+      console.log('pizza ', pizza);
     });
   }
 
