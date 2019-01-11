@@ -14,3 +14,28 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+.appNavbar {
+  color: color($colorsApp, appRed);
+}
+
+ion-icon {
+    &[class*="custom-"] {
+      mask-size: contain;
+      mask-position: 50% 50%;
+      mask-repeat: no-repeat;
+      background: currentColor;
+      width: 1em;
+      height: 1em;
+    }
+  
+    &[class*="custom-cart-button"] {
+      mask-image: url(../assets/icon/ic_cart_button.svg);
+      
+    }
+    &[class*="custom-cart-navbar"] {
+        mask-image: url(../assets/icon/ic_cart_navbar.svg);
+        font-size: 30px;
+      }
+  
+  }
