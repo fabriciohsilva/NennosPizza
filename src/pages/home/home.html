@@ -8,12 +8,12 @@
 </ion-header>
 
 <ion-content >
-  <div *ngFor="let pizza of Pizzas" class="card-background-page">
+  <div *ngFor="let pizza of pizzas" class="card-background-page">
     <ion-card >
       <img [src]="pizza.imageUrl">
       <div class="card-footer">
           <div>
-              <p>{{pizza.name}}</p>
+            <p>{{pizza.name}}</p>
             {{ pizza.ingredients }} 
           </div>       
           <button class="cart-button" ion-button>

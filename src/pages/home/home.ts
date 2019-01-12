@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 import { ShoppingCartPage } from '../shopping-cart/shopping-cart';
 
+//importing interfaces
+import { Ingredient } from '../../interfaces/ingredient.interface';
+import { Pizza } from '../../interfaces/pizza.interface';
+
+//import providers
+import { PizzaProvider } from '../../providers/pizza/pizza.provider';
 
 @Component({
   selector: 'page-home',
@@ -9,9 +15,10 @@ import { ShoppingCartPage } from '../shopping-cart/shopping-cart';
 })
 export class HomePage {
 
-  BasePrice = 4.00;
+  public basePrice = 4.00; 
+  public pizzas: Array<Pizza>; 
 
-  Ingredients: Array<any> = [
+  Ingredients: Array<Ingredient> = [
     {
       "price": 1,
       "name": "Mozzarella",
@@ -64,137 +71,56 @@ export class HomePage {
     }
   ];
 
-  Pizzas: Array<any> = [
-    {
-      "ingredients": [
-        1,
-        2
-      ],
-      "name": "Margherita",
-      "imageUrl": "https://cdn.pbrd.co/images/M57yElqQo.png"
-    },
-    {
-      "ingredients": [
-        1,
-        5
-      ],
-      "name": "Ricci",
-      "imageUrl": "https://cdn.pbrd.co/images/M58jWCFVC.png"
-    },
-    {
-      "ingredients": [
-        1,
-        2,
-        3,
-        4
-      ],
-      "name": "Boscaiola",
-      "imageUrl": "https://cdn.pbrd.co/images/tOhJQ5N3.png"
-    },
-    {
-      "ingredients": [
-        1,
-        5,
-        6
-      ],
-      "name": "Primavera",
-      "imageUrl": "https://cdn.pbrd.co/images/M57VcfLGQ.png"
-    },
-    {
-      "ingredients": [
-        1,
-        2,
-        7,
-        8
-      ],
-      "name": "Hawaii",
-      "imageUrl": "https://cdn.pbrd.co/images/M57lNSLnC.png"
-    },
-    {
-      "ingredients": [
-        1,
-        9,
-        10
-      ],
-      "name": "Mare Bianco"
-    },
-    {
-      "ingredients": [
-        1,
-        2,
-        4,
-        8,
-        9,
-        10
-      ],
-      "name": "Mari e monti",
-      "imageUrl": "https://cdn.pbrd.co/images/M57K6OFiU.png"
-    },
-    {
-      "ingredients": [
-        1,
-        9
-      ],
-      "name": "Bottarga",
-      "imageUrl": "https://cdn.pbrd.co/images/M57aGTmgA.png"
-    },
-    {
-      "ingredients": [
-        1,
-        2,
-        9,
-        6
-      ],
-      "name": "Boottarga e Asparagi",
-      "imageUrl": "https://cdn.pbrd.co/images/4O6T9RQLX.png"
-    },
-    {
-      "ingredients": [
-        1,
-        5,
-        6
-      ],
-      "name": "Ricci e Asparagi",
-      "imageUrl": "https://cdn.pbrd.co/images/4O70NDkMl.png"
-    }
-  ];
-
   
-  constructor(public navCtrl: NavController) {
+  constructor(
+    public navCtrl: NavController,
+    private pizzaProvider: PizzaProvider,
+    public loadingCtrl: LoadingController) {   
   }
 
-  ionViewDidLoad(){
-    this.Pizzas.forEach((pizza) => {
-      let ingredientsList = [];
+  ionViewDidLoad() {
+    this.pizzaProvider.getPizzasMenuFromDB()
+      .then((data: Array<Pizza>) => {
+        this.pizzas = data;
+
+        let loading = this.loadingCtrl.create({
+          spinner: 'ios',
+          content: ` <div class="custom-spinner-container">
+                      <div class="custom-spinner-box">
+                        Wait...
+                      </div>
+                  </div>`
+        });
       
-      let pizzaIngredients = pizza.ingredients;
-      pizza.price = this.BasePrice;
+        loading.present();   
       
-      // let ingredient = this.Ingredients.filter((ingredient) => {
-      //    return pizza.ingredients.indexOf(ingredient.id) > -1;
-      //   });
-      //   console.log('ingredient: ', ingredient); 
+  
+      this.pizzas.forEach((pizza) => {
+        let ingredientsList = [];
         
-      // ingredientsList.push(ingredient.name);
-      // pizza.price += ingredient.price;
+        let pizzaIngredients = pizza.ingredients;
+        pizza.price = this.basePrice;
 
-      pizzaIngredients.forEach(ingred => {
-        let ingredient = this.Ingredients.filter(ingredient => { return ingredient.id === ingred });
-        ingredient = ingredient[0];
+        pizzaIngredients.forEach(ingred => {
+          let tempIngredient = this.Ingredients.filter(ingredient => {
+              return ingredient.id === ingred });
+              
+          let ingredient: Ingredient = tempIngredient[0];
+          
+          ingredientsList.push(ingredient.name);
+          pizza.price += ingredient.price;
+
+        });     
         
-        ingredientsList.push(ingredient.name);
-        pizza.price += ingredient.price;
+          pizza.ingredients = [];
+          pizza.ingredients = ingredientsList;
+        });
 
-      });     
-      
-      pizza.ingredients = [];
-      pizza.ingredients = ingredientsList;
+        loading.dismiss();
+      });//end this.pizzaProvider.getPizzas()
+  }//end ionViewDidLoad()
 
-      console.log('pizza ', pizza);
-    });
-  }
-
-  openCart() {
+  openCart(): void {
     this.navCtrl.push(ShoppingCartPage, {});
   }
 
