@@ -1,12 +1,46 @@
 <ion-header>
-
   <ion-navbar class="appNavbar">
-    <ion-title>Cart</ion-title>
+      <ion-buttons right>
+        <button>       
+        <ion-icon (click)="openDrinks()" name="custom-drinks"></ion-icon>        
+        </button>
+      </ion-buttons>
+    <ion-title>
+      Cart
+    </ion-title>
+    
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
+
+  <ion-list inset>
+    <div ion-item *ngFor="let pizza of pizzas">
+      <ion-buttons left>  
+        <button>      
+          <ion-icon name="close"></ion-icon>        
+        </button>
+      </ion-buttons>
+      <div>{{ pizza.name }} {{ pizza.price }}</div>
+    </div>
+  </ion-list>
+
+  <ion-list inset>
+    <div ion-item *ngFor="let drink of drinks">
+      <ion-buttons left>  
+        <button>      
+          <ion-icon  name="close"></ion-icon>        
+        </button>
+      </ion-buttons>
+      <div>{{ drink.name }} {{ drink.price }}</div>
+    </div>
+  </ion-list>
+
+  Total $0
+
+  <ion-buttons block class="btn-checkout" (click)="checkout()">
+    <button>Checkout</button>
+  </ion-buttons>
 
 </ion-content>

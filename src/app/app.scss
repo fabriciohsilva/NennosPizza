@@ -22,5 +22,9 @@ ion-icon {
         mask-image: url(../assets/icon/ic_cart_navbar.svg);
         font-size: 30px;
       }
+      &[class*="custom-drinks"] {
+        mask-image: url(../assets/icon/ic_drinks.svg);
+        font-size: 30px;
+      }
   
   }

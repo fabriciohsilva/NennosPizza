@@ -1,6 +1,5 @@
 import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { Storage } from '@ionic/storage';
 
 import { Pizza } from '../../interfaces/pizza.interface';
@@ -17,13 +16,8 @@ export class PizzaProvider {
   constructor(
     public http: Http,
     private storage: Storage) {
-
-    this.isConnected = navigator.onLine;
-    setInterval(() => {
-      this.isConnected = navigator.onLine;
-    }, 300000); //test connection every 5 minutes
-
   }//end constructor
+
 
   public getPizzasMenuFromDB() {
     return new Promise(resolve =>{
@@ -32,35 +26,24 @@ export class PizzaProvider {
           this.storage.get('Pizzas')
           .then((data) => {
             if (data === null) {
-              return this.savePizzaMenuOnDB();
+              resolve(this.savePizzaMenuOnDB());
+            }else {
+              resolve(data);
             }
-
-            resolve(data);
           });
         });
     });
   }//end public getPizzaFromDB()
 
+
   public savePizzaMenuOnDB() {
-    return new Promise(resolve =>{
-      this.storage.set('Pizzas', this.getPizzas() );
-      this.storage.get('Pizzas')
-      .then((data) => {
+    return new Promise(resolve =>{      
+      this.getPizzas().then(data => {
+        this.storage.set('Pizzas', data);      
         resolve(data);
-      });
+      });      
     });
-        
   }//end public getPizzaFromDB()
-
-
-  public savePizzaOnDB(pizza: Pizza) {
-     this.storage.ready()
-      .then(() => {
-        this.storage.set('Pizzas', pizza);
-      });     
-  }//end public setPizzaOnDB()
-
-
 
   public getPizzas() {
     return new Promise(resolve => {

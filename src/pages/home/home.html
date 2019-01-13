@@ -1,6 +1,10 @@
 <ion-header>
   <ion-navbar class="appNavbar">
-    <ion-icon (click)="openCart()" name="custom-cart-navbar"></ion-icon>
+      <ion-buttons left>  
+        <button>      
+          <ion-icon (click)="openCart()" name="custom-cart-navbar"></ion-icon>        
+        </button>
+        </ion-buttons>
     <ion-title>
       Nenno's Pizza
     </ion-title>
@@ -17,7 +21,7 @@
             {{ pizza.ingredients }} 
           </div>       
           <button class="cart-button" ion-button>
-            <ion-icon icon-left name="custom-cart-button"></ion-icon>
+            <ion-icon icon-left name="custom-cart-button" (click)="insertPizzaOnCart(pizza)"></ion-icon>
             ${{ pizza.price }}
           </button>
         </div>

@@ -8,6 +8,8 @@ import { Pizza } from '../../interfaces/pizza.interface';
 
 //import providers
 import { PizzaProvider } from '../../providers/pizza/pizza.provider';
+import { IngredientProvider } from '../../providers/ingredient/ingredient.provider';
+import { ShoppingCartProvider } from '../../providers/shopping-cart/shopping-cart.provider';
 
 @Component({
   selector: 'page-home',
@@ -16,66 +18,15 @@ import { PizzaProvider } from '../../providers/pizza/pizza.provider';
 export class HomePage {
 
   public basePrice = 4.00; 
-  public pizzas: Array<Pizza>; 
-
-  Ingredients: Array<Ingredient> = [
-    {
-      "price": 1,
-      "name": "Mozzarella",
-      "id": 1
-    },
-    {
-      "price": 0.5,
-      "name": "Tomato Sauce",
-      "id": 2
-    },
-    {
-      "price": 1.5,
-      "name": "Salami",
-      "id": 3
-    },
-    {
-      "price": 2,
-      "name": "Mushrooms",
-      "id": 4
-    },
-    {
-      "price": 4,
-      "name": "Ricci",
-      "id": 5
-    },
-    {
-      "price": 2,
-      "name": "Asparagus",
-      "id": 6
-    },
-    {
-      "price": 1,
-      "name": "Pineapple",
-      "id": 7
-    },
-    {
-      "price": 3,
-      "name": "Speck",
-      "id": 8
-    },
-    {
-      "price": 2.5,
-      "name": "Bottarga",
-      "id": 9
-    },
-    {
-      "price": 2.2,
-      "name": "Tuna",
-      "id": 10
-    }
-  ];
-
+  public pizzas: Array<Pizza>;
+  public ingredients: Array<Ingredient>;
   
   constructor(
+    private ingredientProvider: IngredientProvider,
+    public loadingCtrl: LoadingController,
     public navCtrl: NavController,
     private pizzaProvider: PizzaProvider,
-    public loadingCtrl: LoadingController) {   
+    private shoppingCartProvider: ShoppingCartProvider) {   
   }
 
   ionViewDidLoad() {
@@ -83,45 +34,54 @@ export class HomePage {
       .then((data: Array<Pizza>) => {
         this.pizzas = data;
 
-        let loading = this.loadingCtrl.create({
-          spinner: 'ios',
-          content: ` <div class="custom-spinner-container">
-                      <div class="custom-spinner-box">
-                        Wait...
-                      </div>
-                  </div>`
-        });
-      
-        loading.present();   
-      
-  
-      this.pizzas.forEach((pizza) => {
-        let ingredientsList = [];
-        
-        let pizzaIngredients = pizza.ingredients;
-        pizza.price = this.basePrice;
+        this.ingredientProvider.getIngredientsListFromDB()
+        .then((data: Array<Ingredient>) => {
+          this.ingredients = data;      
 
-        pizzaIngredients.forEach(ingred => {
-          let tempIngredient = this.Ingredients.filter(ingredient => {
-              return ingredient.id === ingred });
-              
-          let ingredient: Ingredient = tempIngredient[0];
+          let loading = this.loadingCtrl.create({
+            spinner: 'ios',
+            content: ` <div class="custom-spinner-container">
+                        <div class="custom-spinner-box">
+                          Wait...
+                        </div>
+                    </div>`
+          });
+        
+          loading.present();   
+        
+    
+        this.pizzas.forEach((pizza) => {
+          let ingredientsList = [];
           
-          ingredientsList.push(ingredient.name);
-          pizza.price += ingredient.price;
+          let pizzaIngredients = pizza.ingredients;
+          pizza.price = this.basePrice;
 
-        });     
-        
-          pizza.ingredients = [];
-          pizza.ingredients = ingredientsList;
-        });
+          pizzaIngredients.forEach(ingred => {
+            let tempIngredient = this.ingredients.filter(ingredient => {
+                return ingredient.id === ingred });
+                
+            let ingredient: Ingredient = tempIngredient[0];
+            
+            ingredientsList.push(ingredient.name);
+            pizza.price += ingredient.price;
 
-        loading.dismiss();
+          });     
+          
+            pizza.ingredients = [];
+            pizza.ingredients = ingredientsList;
+          });
+
+          loading.dismiss();
+      });//end
       });//end this.pizzaProvider.getPizzas()
   }//end ionViewDidLoad()
 
-  openCart(): void {
+  public openCart(): void {
     this.navCtrl.push(ShoppingCartPage, {});
-  }
+  }//end public openCart(): void
+
+  public insertPizzaOnCart(pizza: Pizza): void {
+    this.shoppingCartProvider.saveItemOnCart(pizza);
+  }//public insertPizzaOnCart(): void
 
 }

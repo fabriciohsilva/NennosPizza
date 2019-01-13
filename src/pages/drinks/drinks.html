@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-navbar class="appNavbar">
+      <ion-title>
+        Drinks
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
+
+
+<ion-content padding>
+
+    <ion-list no-lines>
+      <div ion-item *ngFor="let drink of drinks">
+        <ion-buttons left>  
+          <button>      
+            <ion-icon (click)="insertDrinkOnCart(drink)" name="add"></ion-icon>        
+          </button>
+        </ion-buttons>
+        <div>{{ drink.name }} {{ drink.price }}</div>
+      </div>
+    </ion-list>
+
+</ion-content>

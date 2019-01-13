@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpModule } from '@angular/http';
 
+import { DrinksPage } from '../pages/drinks/drinks';
 import { NennosPizza } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
@@ -18,6 +19,7 @@ import { ShoppingCartProvider } from '../providers/shopping-cart/shopping-cart.p
 
 @NgModule({
   declarations: [
+    DrinksPage,
     NennosPizza,
     HomePage,
     ShoppingCartPage
@@ -36,6 +38,7 @@ import { ShoppingCartProvider } from '../providers/shopping-cart/shopping-cart.p
   ],
   bootstrap: [IonicApp],
   entryComponents: [
+    DrinksPage,
     NennosPizza,
     HomePage,
     ShoppingCartPage
