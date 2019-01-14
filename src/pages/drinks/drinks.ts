@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 //importing interfaces
 import { Drink } from '../../interfaces/drink.interface';
@@ -22,7 +22,8 @@ export class DrinksPage {
     private drinkProvider: DrinkProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
-    private shoppingCartProvider: ShoppingCartProvider) {
+    private shoppingCartProvider: ShoppingCartProvider,
+    private toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -34,6 +35,14 @@ export class DrinksPage {
 
   public insertDrinkOnCart(drink: Drink): void {
     this.shoppingCartProvider.saveItemOnCart(null, drink);
+    let toast = this.toastCtrl.create({
+      message: 'Added to cart',
+      cssClass: 'custom-toast',
+      duration: 3000,
+      position: 'top'
+    });
+
+    toast.present();
   }//public insertPizzaOnCart(): void
 
 }

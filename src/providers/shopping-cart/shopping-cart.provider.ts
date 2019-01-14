@@ -1,15 +1,14 @@
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 import { Pizza } from '../../interfaces/pizza.interface';
 import { Drink } from '../../interfaces/drink.interface';
-import { Cart } from '../../interfaces/cart.interface';
+import { CartItem } from '../../interfaces/cart.interface';
+import { AppConfig } from '../../app/app.config';
 
 @Injectable()
 export class ShoppingCartProvider {
-
-  private URL: string = 'http://posttestserver.com/post.php';
 
   constructor (
     public http: Http,
@@ -19,10 +18,7 @@ export class ShoppingCartProvider {
           this.storage.get('Cart')
           .then((data) => {
             if (!data)
-            this.storage.set('Cart', {
-              "pizzas" : [],
-              "drinks" : []
-            });
+            this.storage.set('Cart', []);
           });
         });
   }//end constructor
@@ -42,34 +38,69 @@ export class ShoppingCartProvider {
 
 
   public saveItemOnCart(pizza: Pizza, drink?: Drink) {
-    console.log('');
     this.storage.ready()
       .then(() => {        
         this.storage.get('Cart')
         .then((data) => {
-          let cart: Cart = data;
+          let items: Array<CartItem> = data;
           if (pizza)
-            cart.pizzas.push(pizza);
+            items.push({item: pizza, type: 'p'});
           
           if (drink)
-            cart.drinks.push(drink);
+            items.push({item: drink, type: 'd'});
 
-          this.storage.set('Cart', cart);
+          this.storage.set('Cart', items);
         });
     });     
   }//end public setPizzaOnDB()
 
-  public postCheckout() {
+  public saveCartOnDB(cart: Array<CartItem>): void {
     this.storage.ready()
-      .then(() => {        
-        this.storage.get('Cart')
-        .then((data) => {
-          let cart: Cart = data;
-          this.http.post(this.URL, cart )
-          .toPromise()
-          .then(() => console.log('deu certo'))
-          .catch((err) => console.log('Erro: ', err));
-        });
+      .then(() => {
+        this.storage.set('Cart', cart);
+    });
+  }
+
+
+  public postCheckout() {
+    return new Promise((resolve, reject) =>{
+      this.storage.ready()
+        .then(() => {        
+          this.storage.get('Cart')
+          .then((data) => {
+            let cart: Array<CartItem> = data;
+            let pizzas: Array<Pizza> = [];
+            let drinks: Array<Drink> = [];
+
+            cart.forEach(item => {
+              if ( item.type = 'p' ) {              
+                pizzas.push({ name: item.item.name, ingredients: item.item.ingredients }); //removing optional fields of pizza
+              }
+              else  {
+                drinks.push( item.item);
+              }
+            });//end cart.forEach(item =>
+
+            var headers = new Headers();
+            headers.append("Accept", 'application/json');
+            headers.append('Content-Type', 'application/json' );
+
+            const requestOptions = new RequestOptions({ headers: headers });
+
+            let postData = {
+                pizzas: pizzas,
+                drinks: drinks
+            };
+
+            this.http.post(AppConfig.URLCHECKOUT, postData, requestOptions)
+            .toPromise()
+            .then((response) => {
+              this.storage.set('Cart', []);
+              resolve(response);              
+            })
+            .catch((err) => reject(err) );
+          });
+      });
     });
   }//end public postCheckout()
 

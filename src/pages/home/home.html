@@ -1,10 +1,10 @@
 <ion-header>
   <ion-navbar class="appNavbar">
-      <ion-buttons left>  
-        <button>      
-          <ion-icon (click)="openCart()" name="custom-cart-navbar"></ion-icon>        
-        </button>
-        </ion-buttons>
+    <ion-buttons left>  
+      <button class="appButton">      
+        <ion-icon (click)="openCart()" name="custom-cart-navbar"></ion-icon>        
+      </button>
+      </ion-buttons>
     <ion-title>
       Nenno's Pizza
     </ion-title>
@@ -14,17 +14,24 @@
 <ion-content >
   <div *ngFor="let pizza of pizzas" class="card-background-page">
     <ion-card >
-      <img [src]="pizza.imageUrl">
+      <img *ngIf="pizza.imageUrl; else pizzaDefault" [src]="pizza.imageUrl">
+      
+      <ng-template #pizzaDefault>
+        <img src="../../assets/imgs/pizza-default.png">
+      </ng-template>
+
       <div class="card-footer">
-          <div>
-            <p>{{pizza.name}}</p>
-            {{ pizza.ingredients }} 
-          </div>       
-          <button class="cart-button" ion-button>
-            <ion-icon icon-left name="custom-cart-button" (click)="insertPizzaOnCart(pizza)"></ion-icon>
-            ${{ pizza.price }}
-          </button>
-        </div>
+        <div class="card-description">
+          <h2>{{pizza.name}}</h2>
+          <p>{{ pizza.ingredientsNames }}</p>
+        </div>       
+        <button class="card-button" (click)="insertPizzaOnCart(pizza)" ion-button>            
+          <div class="card-icon">
+            <ion-icon icon-left name="custom-cart-button" ></ion-icon>
+          </div>
+          <div>${{ pizza.price }}</div>
+        </button>
+      </div>
     </ion-card>
   </div>
 

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar class="appNavbar">
       <ion-buttons right>
-        <button>       
+        <button class="appButton">       
         <ion-icon (click)="openDrinks()" name="custom-drinks"></ion-icon>        
         </button>
       </ion-buttons>
@@ -12,35 +12,23 @@
   </ion-navbar>
 </ion-header>
 
-
-<ion-content padding>
-
-  <ion-list inset>
-    <div ion-item *ngFor="let pizza of pizzas">
-      <ion-buttons left>  
-        <button>      
-          <ion-icon name="close"></ion-icon>        
-        </button>
-      </ion-buttons>
-      <div>{{ pizza.name }} {{ pizza.price }}</div>
-    </div>
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of cart">
+      <ion-icon class="remove-icon" name="close" (click)="removeItem(item)" item-start></ion-icon>
+      <ion-label>{{ item.item.name }}</ion-label>
+      <ion-note item-end>${{ item.item.price }}</ion-note>
+    </ion-item>
   </ion-list>
 
-  <ion-list inset>
-    <div ion-item *ngFor="let drink of drinks">
-      <ion-buttons left>  
-        <button>      
-          <ion-icon  name="close"></ion-icon>        
-        </button>
-      </ion-buttons>
-      <div>{{ drink.name }} {{ drink.price }}</div>
-    </div>
-  </ion-list>
-
-  Total $0
-
-  <ion-buttons block class="btn-checkout" (click)="checkout()">
-    <button>Checkout</button>
-  </ion-buttons>
-
+  <div class="cart-total">
+    <div>Total</div>
+    <div>${{ totalCart }}</div>
+  </div>
 </ion-content>
+
+<ion-footer no-shadow>
+  <ion-toolbar position="bottom">
+    <button class="btn-checkout" (click)="checkout()" [disabled]="!(cart.length > 0)" block>Checkout</button>
+  </ion-toolbar>
+</ion-footer>

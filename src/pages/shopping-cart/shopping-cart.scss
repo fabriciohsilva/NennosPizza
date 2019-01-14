@@ -1,3 +1,38 @@
 page-shopping-cart {
+  padding: 1px;
+}
 
+.item-ios {
+  color: color($colorsApp, appBlack);
+}
+
+.note-ios {
+  color: color($colorsApp, appBlack);
+}
+
+.btn-checkout {
+  width: 100%;
+  background-color: color($colorsApp, appRed);
+  text-align: center;
+  text-transform: uppercase;
+  color: color($colors, white);
+  font-size: 16px;
+  padding: 15px;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;        
+  align-items: flex-end;
+  font-size: 17px;
+  font-weight: 700;
+  margin-left: 55px;
+  padding: 0 16px 15px 0;
+  border-bottom: 0.55px solid #c8c7cc;
+  color: color($colorsApp, appBlack);
+}
+
+ion-footer .toolbar-ios {
+  padding: 0;
 }

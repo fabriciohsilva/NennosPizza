@@ -3,52 +3,68 @@ page-home {
 }
 
 .toolbar-title-ios {
-    text-align: center;
-    font-size: 17px;
-    letter-spacing: 0px;
-    text-transform: uppercase;
-    color: color($colorsApp, appRed);
+  text-align: center;
+  font-size: 17px;
+  letter-spacing: 0px;
+  text-transform: uppercase;
+  color: color($colorsApp, appRed);
 }
 
 .card-ios {
-    margin: 0px;
+  margin: 0px;
 }
 
 .card-background-page {
+  ion-card {
+    position: relative;
+    text-align: left;
+    background-image: url("/assets/imgs/bg_wood.png");
+    background-size: contain;
+    border-radius: 0px;
+    height: 178px;
+    width: 100%;        
+    display: flex;
+    justify-content: center;
+    flex-direction: column;       
+  }
 
-    ion-card {
-        position: relative;
-        text-align: left;
-        background-image: url("/assets/imgs/bg_wood.png");
-        background-size: contain;
-        border-radius: 0px;
-        height: 178px;
-        width: 100%;        
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        
+  .card-footer {  
+    position: absolute;
+    bottom: 0px;
+    padding: 10px 15px 10px 15px;
+    background: color($colorsApp, appWhite-90);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;        
+    align-items: flex-end;
+    width: 100%;
+    min-height: 69px;
+    max-height: 85px;
+    color: color($colorsApp, appBlack);
+    
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
     }
 
-    .card-footer {   
-        position: absolute;
-        bottom: 0px;
-        padding: 15px;
-        background: rgba(248,248,248,0.90);
-        display: flex;
-        justify-content: space-between;
-        flex-direction: row;        
-        width: 100%;
-        height: 69px;
+    p {
+      font-size: 14px;
+      max-width: 240px; 
+      word-break: break-all;
     }
-}
 
-.cart-button {
-    background-color: color($colorsApp, appYellow);
-    border-radius: 4px;
-    width: 64px;
-    height: 28px;
-    font-size: 12px;
-    color: #FFFFFF;
-    letter-spacing: -0.39px;
+    .card-button {
+      background-color: color($colorsApp, appYellow);
+      border-radius: 4px;
+      width: 64px;
+      height: 28px;
+      font-size: 12px;
+      color: #FFFFFF;
+      letter-spacing: -0.39px;
+      margin-bottom: 0;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 0 0.5em;
+    }
+  }
 }

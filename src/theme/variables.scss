@@ -38,12 +38,15 @@ $colors: (
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  white:      #fff,
 );
 
 $colorsApp: (
   appRed: #E14D45,
-  appYellow: #FFCD2B
+  appYellow: #FFCD2B,
+  appBlack: #4A4A4A,
+  appWhite-90: rgba(248,248,248,0.90)
 );
 
 

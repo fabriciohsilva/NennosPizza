@@ -10,6 +10,7 @@ import { DrinksPage } from '../pages/drinks/drinks';
 import { NennosPizza } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
+import { ModalSuccess } from '../modals/modal-success/modal-success';
 
 import { DrinkProvider } from '../providers/drink/drink.provider';
 import { IngredientProvider } from '../providers/ingredient/ingredient.provider';
@@ -20,6 +21,7 @@ import { ShoppingCartProvider } from '../providers/shopping-cart/shopping-cart.p
 @NgModule({
   declarations: [
     DrinksPage,
+    ModalSuccess,
     NennosPizza,
     HomePage,
     ShoppingCartPage
@@ -28,7 +30,8 @@ import { ShoppingCartProvider } from '../providers/shopping-cart/shopping-cart.p
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(NennosPizza,{
-      mode: 'ios'
+      mode: 'ios',
+      backButtonText: ''
     }),
     IonicStorageModule.forRoot({
       name: 'fabriciohsilva',
@@ -39,6 +42,7 @@ import { ShoppingCartProvider } from '../providers/shopping-cart/shopping-cart.p
   bootstrap: [IonicApp],
   entryComponents: [
     DrinksPage,
+    ModalSuccess,
     NennosPizza,
     HomePage,
     ShoppingCartPage

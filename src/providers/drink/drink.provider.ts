@@ -2,15 +2,11 @@ import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
-import { Drink } from '../../interfaces/drink.interface';
-
 import 'rxjs/add/operator/map';
+import { AppConfig } from '../../app/app.config';
 
 @Injectable()
 export class DrinkProvider {
-
-  public isConnected: boolean = true;
-  private URL: string = 'https://api.myjson.com/bins/150da7';
 
   constructor(
     public http: Http,
@@ -48,7 +44,7 @@ export class DrinkProvider {
 
   public getDrinks() {
     return new Promise(resolve => {
-      this.http.get(this.URL)
+      this.http.get(AppConfig.URLDRINKS)
         .map(res => res.json())
         .subscribe(data => {
           resolve( data);
