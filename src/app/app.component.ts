@@ -12,7 +12,12 @@ export class NennosPizza {
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
-      statusBar.styleDefault();
+      
+      if(platform.is('android'))
+        statusBar.styleLightContent();
+      else
+        statusBar.styleDefault();
+
       splashScreen.hide();
     });
   }
